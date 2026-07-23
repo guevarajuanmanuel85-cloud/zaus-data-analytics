@@ -160,3 +160,18 @@ plt.title("Ventas por método de pago - Zaus")
 plt.savefig("metodos_pago.png")
 
 print("Gráfico guardado como metodos_pago.png")
+
+print("")
+print("=== RESUMEN EJECUTIVO - ZAUS ===")
+print("Facturación total de la semana:", total_semana)
+print("Promedio diario:", round(promedio, 0))
+print("Mejor día:", mejor_dia, "- Peor día:", peor_dia)
+
+dias_ok = 0
+for indice, fila in datos_limpios.iterrows():
+    if fila["Total Ventas ($)"] >= punto_equilibrio:
+        dias_ok = dias_ok + 1
+
+print("Días que cubrieron el punto de equilibrio:", dias_ok, "de", len(datos_limpios))
+print("Método de pago dominante:", "QR" if total_qr > total_efectivo and total_qr > total_tarjetas else "Efectivo" if total_efectivo > total_tarjetas else "Tarjetas")
+print("================================")
