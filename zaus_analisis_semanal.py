@@ -245,14 +245,21 @@ def main():
     print("\n=== TOP 10 PRODUCTOS ===")
     print(top_productos(df, top_n=10))
 
-    guardar_excel(df)
-
     duplicados = detectar_posibles_duplicados(df)
     print("\n=== POSIBLES DUPLICADOS (mismo ticket repetido) ===")
     if len(duplicados) == 0:
         print("No se encontraron tickets sospechosos.")
     else:
         print(duplicados)
+
+    guardar_excel(df)
+
+def detectar_posibles_duplicados(df):
+    cabeceras = df[df["Tipo Transacción"].isin(TIPOS_CABECERA)]
+    conteo_tickets = cabeceras.groupby("Nro Ticket").size()
+    tickets_sospechosos = conteo_tickets[conteo_tickets > 1].index
+    detalle = cabeceras[cabeceras["Nro Ticket"].isin(tickets_sospechosos)]
+    return detalle[["Fecha", "Hora", "Nro Ticket", "Precio"]].sort_values("Nro Ticket")
 
 if __name__ == "__main__":
     main()
