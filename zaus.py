@@ -135,3 +135,28 @@ JOIN costos ON menu.nombre = costos.nombre
 """, conexion)
 
 print(resultado)
+
+total_efectivo = datos_limpios["Efectivo ($)"].sum()
+total_tarjetas = datos_limpios["Tarjetas ($)"].sum()
+total_qr = datos_limpios["QR ($)"].sum()
+
+print("Total en efectivo:", total_efectivo)
+print("Total en tarjetas:", total_tarjetas)
+print("Total en QR:", total_qr)
+
+total_general = total_efectivo + total_tarjetas + total_qr
+
+print("")
+print("Porcentaje efectivo:", round(total_efectivo / total_general * 100, 1), "%")
+print("Porcentaje tarjetas:", round(total_tarjetas / total_general * 100, 1), "%")
+print("Porcentaje QR:", round(total_qr / total_general * 100, 1), "%")
+
+metodos = ["Efectivo", "Tarjetas", "QR"]
+montos = [total_efectivo, total_tarjetas, total_qr]
+
+plt.figure()
+plt.pie(montos, labels=metodos, autopct="%1.1f%%")
+plt.title("Ventas por método de pago - Zaus")
+plt.savefig("metodos_pago.png")
+
+print("Gráfico guardado como metodos_pago.png")
